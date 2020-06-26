@@ -1,0 +1,7 @@
+{
+  "id": "/Posts",
+  "type": "array",
+  "items": {
+    "$ref": "/Post"
+  }
+}

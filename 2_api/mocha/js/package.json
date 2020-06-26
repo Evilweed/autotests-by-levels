@@ -1,0 +1,24 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "scripts": {
+    "pretest": "eslint ./",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0",
+    "eslint": "^7.2.0",
+    "got": "^11.3.0",
+    "husky": "^4.2.5",
+    "jsonschema": "^1.2.6",
+    "log4js": "^6.3.0",
+    "mocha": "^8.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretest"
+    }
+  }
+}

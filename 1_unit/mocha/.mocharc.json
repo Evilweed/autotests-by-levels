@@ -1,0 +1,9 @@
+{
+  "spec": [
+    "./src/tests/**/*.test.js"
+  ],
+  "reporter": "spec",
+  "ui": "bdd",
+  "timeout": "60000",
+  "slow": "18000"
+}

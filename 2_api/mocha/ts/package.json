@@ -1,0 +1,27 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "scripts": {
+    "pretest": "tslint -p tsconfig.json --fix",
+    "test": "ts-node ./node_modules/mocha/bin/mocha"
+  },
+  "dependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^12.12.42",
+    "chai": "^4.2.0",
+    "got": "^11.3.0",
+    "husky": "^4.2.5",
+    "jsonschema": "^1.2.6",
+    "log4js": "^6.3.0",
+    "mocha": "^8.0.1",
+    "ts-node": "^8.10.2",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretest"
+    }
+  }
+}

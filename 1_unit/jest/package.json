@@ -1,0 +1,20 @@
+{
+  "name": "jest",
+  "version": "1.0.0",
+  "dependencies": {
+    "jest": "^26.0.1"
+  },
+  "scripts": {
+    "test": "jest --coverage=true"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 90,
+        "statements": 90
+      }
+    }
+  }
+}

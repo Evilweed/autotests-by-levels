@@ -1,0 +1,36 @@
+{
+  "name": "bdd",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "webdriver-manager update --gecko false --ie false --ignore_ssl --alternate_cdn",
+    "clean": "rimraf ./artifacts/cucumber/**.json && rimraf ./artifacts/cucumber/**.xml",
+    "pretest": "eslint ./ && npm run clean",
+    "test": "protractor protractor.conf.js --disableChecks",
+    "generate-report": "node reporter.conf.js"
+  },
+  "dependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/cucumber": "^6.0.1",
+    "chai": "^4.2.0",
+    "cucumber": "^6.0.5",
+    "cucumber-html-reporter": "^5.2.0",
+    "cucumber-junit-formatter": "^0.2.2",
+    "cucumber-pretty": "^6.0.0",
+    "eslint": "^7.2.0",
+    "husky": "^4.2.5",
+    "log4js": "^6.3.0",
+    "protractor": "^7.0.0",
+    "protractor-cucumber-framework": "^6.2.1",
+    "rimraf": "^3.0.2",
+    "yargs": "^15.3.1"
+  },
+  "engines": {
+    "node": ">=12",
+    "npm": ">=6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretest"
+    }
+  }
+}

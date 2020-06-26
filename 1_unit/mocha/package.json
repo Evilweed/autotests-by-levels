@@ -1,0 +1,14 @@
+{
+  "name": "6",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "nyc mocha"
+  },
+  "dependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1",
+    "nyc": "^15.0.1"
+  }
+}

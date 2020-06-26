@@ -1,0 +1,39 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "webdriver-manager update --gecko false --ie false --ignore_ssl --alternate_cdn",
+    "clean": "rimraf ./artifacts/allure/source/*",
+    "pretest": "tslint -p tsconfig.json --fix && npm run clean",
+    "test": "ts-node node_modules/protractor/bin/protractor protractor.conf.ts && npm run generate:allure-report",
+    "posttest": "chromedriver_killer.bat",
+    "allure:history": "copyfiles -f \"./artifacts/allure/report/history/**\" ./artifacts/allure/source/history/",
+    "allure:report": "allure generate ./artifacts/allure/source -c -o ./artifacts/allure/report",
+    "generate:allure-report": "npm run allure:history && npm run allure:report"
+  },
+  "dependencies": {
+    "@types/jasmine": "^2.8.0",
+    "@types/node": "^12.12.42",
+    "allure-commandline": "^2.13.0",
+    "allure-jasmine": "^2.0.0-beta.7",
+    "copyfiles": "^2.3.0",
+    "husky": "^4.2.5",
+    "jasmine-reporters": "2.3.2",
+    "jasmine-spec-reporter": "5.0.2",
+    "log4js": "^6.3.0",
+    "protractor": "^7.0.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.10.2",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5"
+  },
+  "engines": {
+    "node": ">=12",
+    "npm": ">=6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretest"
+    }
+  }
+}
