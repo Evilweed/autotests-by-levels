@@ -1,14 +1,14 @@
 import {Protractor} from '../../core/protractor/Protractor';
 import {ElementArrayFinder, ElementFinder, Ptor} from 'protractor';
-import {BaseElementAsserts} from '../../asserts/BaseElementAsserts';
+import {ElementAsserts} from '../../asserts/ElementAsserts';
 
 export class BaseElement extends Protractor {
 
-    public asserts: BaseElementAsserts;
+    public asserts: ElementAsserts;
 
     constructor(protractor: Ptor, rootEl: ElementFinder | ElementArrayFinder) {
         super(protractor, rootEl);
-        this.asserts = new BaseElementAsserts(this);
+        this.asserts = new ElementAsserts(this);
     }
 
     public get(number: number) {

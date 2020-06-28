@@ -4,6 +4,9 @@ import {SpecReporter, StacktraceOption} from 'jasmine-spec-reporter';
 import {JasmineAllureReporter} from 'allure-jasmine';
 import {ScreenshotReporter} from './src/helpers/Reporter';
 
+const ARTIFACTS_DIR = './artifacts';
+
+
 export const specReporter = new SpecReporter({
     spec: {
         displayStacktrace: StacktraceOption.NONE,
@@ -19,16 +22,16 @@ export const specReporter = new SpecReporter({
 });
 
 export const jUnitXmlReporter = new Reporters.JUnitXmlReporter({
-    savePath: './artifacts/junit',
+    savePath: `${ARTIFACTS_DIR}/junit`,
     consolidateAll: true
 });
 
 export const jasmineAllureReporter = new JasmineAllureReporter({
-    resultsDir: './artifacts/allure/source',
+    resultsDir: `${ARTIFACTS_DIR}/allure/source`,
 });
 
 export const screenshotReporter = new ScreenshotReporter({
     allure: jasmineAllureReporter.getInterface(),
-    path: './artifacts/screenshot/',
+    path: `${ARTIFACTS_DIR}/screenshot/`,
     failed: true
 });

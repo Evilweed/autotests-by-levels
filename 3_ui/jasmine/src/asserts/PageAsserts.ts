@@ -1,7 +1,7 @@
 import {BaseAsserts} from './BaseAsserts';
 import {BasePage} from '../po/pages/BasePage';
 
-export class BasePageAsserts extends BaseAsserts {
+export class PageAsserts extends BaseAsserts {
 
     constructor(private readonly page: BasePage) {
         super(page);

@@ -2,6 +2,7 @@ import {Protractor} from '../core/protractor/Protractor';
 import {ElementFinder} from 'protractor';
 import {BasePage} from '../po/pages/BasePage';
 import {BaseElement} from '../po/elements/BaseElement';
+import {TIMEOUT} from '../../protractor.conf';
 
 export class WaitHelper {
     constructor(private readonly protractor: Protractor | BasePage | BaseElement) {
@@ -12,12 +13,12 @@ export class WaitHelper {
             if (this.protractor.rootEl instanceof ElementFinder) {
                 await this.protractor.browser.wait(
                     this.protractor.EC.visibilityOf(this.protractor.rootEl),
-                    timeout || 5000
+                    timeout || TIMEOUT.sec
                 );
             } else {
                 await this.protractor.browser.wait(
                     this.protractor.EC.visibilityOf(this.protractor.rootEl.get(1)),
-                    timeout || 5000
+                    timeout || TIMEOUT.sec
                 );
             }
         } catch (e) {
@@ -31,12 +32,12 @@ export class WaitHelper {
             if (this.protractor.rootEl instanceof ElementFinder) {
                 await this.protractor.browser.wait(
                     this.protractor.EC.presenceOf(this.protractor.rootEl),
-                    timeout || 5000
+                    timeout || TIMEOUT.sec
                 );
             } else {
                 await this.protractor.browser.wait(
                     this.protractor.EC.presenceOf(this.protractor.rootEl.get(1)),
-                    timeout || 5000
+                    timeout || TIMEOUT.sec
                 );
             }
         } catch (e) {
@@ -50,7 +51,7 @@ export class WaitHelper {
             try {
                 return this.protractor.browser.wait(
                     this.protractor.EC.urlIs(url || this.protractor.baseUrl + this.protractor.url),
-                    timeout || 5000
+                    timeout || TIMEOUT.sec
                 );
             } catch (e) {
                 e.message = errorMessage ||
@@ -68,12 +69,12 @@ export class WaitHelper {
             if (this.protractor.rootEl instanceof ElementFinder) {
                 await this.protractor.browser.wait(
                     this.protractor.EC.elementToBeClickable(this.protractor.rootEl),
-                    timeout || 5000
+                    timeout || TIMEOUT.sec
                 );
             } else {
                 await this.protractor.browser.wait(
                     this.protractor.EC.elementToBeClickable(this.protractor.rootEl.get(1)),
-                    timeout || 5000
+                    timeout || TIMEOUT.sec
                 );
             }
         } catch (e) {

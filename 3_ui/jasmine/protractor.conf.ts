@@ -6,13 +6,24 @@ import {
     specReporter
 } from './reporter.conf';
 
+export const TIMEOUT = {
+    sec: 1000,
+    xss: 2000,
+    xs: 3000,
+    s: 5000,
+    m: 10000,
+    l: 20000,
+    xl: 30000,
+    min: 60000
+};
+
 export const config: Config = {
 
     baseUrl: 'https://angular.io',
     directConnect: false,
     ignoreUncaughtExceptions: true,
-    getPageTimeout: 20000,
-    allScriptsTimeout: 30000,
+    getPageTimeout: TIMEOUT.l,
+    allScriptsTimeout: TIMEOUT.xl,
 
     specs: [
         './src/tests/**/*.ts'
@@ -24,9 +35,9 @@ export const config: Config = {
 
     jasmineNodeOpts: {
         showColors: true,
-        defaultTimeoutInterval: 70000,
-        includeStackTrace: true,
-        isVerbose: true,
+        defaultTimeoutInterval: TIMEOUT.min,
+        includeStackTrace: false,
+        isVerbose: false,
     },
 
     async onPrepare() {
