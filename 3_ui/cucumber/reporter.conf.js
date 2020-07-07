@@ -20,6 +20,7 @@ if (jsonFileNames) {
 const options = {
     theme: 'bootstrap',
     jsonFile: './artifacts/cucumber/cucumber.json',
+    // jsonDir: './artifacts/cucumber/', jsonFile takes precedence over jsonDir
     output: './artifacts/html/report.html',
     reportSuiteAsScenarios: true,
     scenarioTimestamp: true,
