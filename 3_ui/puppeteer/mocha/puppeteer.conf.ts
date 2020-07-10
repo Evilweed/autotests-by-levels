@@ -33,7 +33,7 @@ export const TIMEOUT = {
 export const config: IConf = {
 
     timeout: TIMEOUT,
-    baseUrl: argv.baseUrl || '',
+    baseUrl: argv.baseUrl || 'https://angular.io/',
 
     puppeteer: {
         headless: false,
@@ -56,8 +56,8 @@ export const config: IConf = {
         ui: 'bdd',
         timeout: TIMEOUT.min * 2,
         slow: TIMEOUT.min,
-        // parallel: false,
-        // jobs: 2
+        parallel: true,
+        jobs: 2
     },
 
     log4js: {
