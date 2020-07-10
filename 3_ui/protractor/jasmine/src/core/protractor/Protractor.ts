@@ -1,4 +1,4 @@
-import {ElementArrayFinder, ElementFinder, ProtractorBrowser, ProtractorExpectedConditions, Ptor} from 'protractor';
+import {ElementArrayFinder, ElementFinder, ProtractorBrowser, ProtractorExpectedConditions, Ptor} from 'src/core/protractor/Protractor';
 import * as log4js from 'log4js';
 import {Logger} from '../../helpers/Logger';
 import {WaitHelper} from '../../helpers/WaitHelper';

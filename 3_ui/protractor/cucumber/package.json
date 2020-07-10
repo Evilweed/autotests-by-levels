@@ -4,7 +4,7 @@
   "scripts": {
     "postinstall": "webdriver-manager update --gecko false --ie false --ignore_ssl --alternate_cdn",
     "clean": "rimraf ./artifacts/cucumber/**.json && rimraf ./artifacts/cucumber/**.xml",
-    "pretest": "eslint ./ && npm run clean",
+    "pretest": "eslint  && npm run clean",
     "test": "protractor protractor.conf.js --disableChecks",
     "generate-report": "node reporter.conf.js"
   },
