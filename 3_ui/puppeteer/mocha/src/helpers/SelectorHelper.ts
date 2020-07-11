@@ -15,7 +15,8 @@ interface IElementHandler {
 type TParams = 'index' | 'attributes';
 
 /**
- * This function for getting selector from ElementHandle
+ * This function to get selector from ElementHandle
+ * (Based on: https://github.com/sputnick-dev/retrieveCssOrXpathSelectorFromTextOrNode)
  *
  * E.g.:
  * 1. getSelectorFromElementHandle(element, 'index') --> div > form > label:nth-child(2) > input
@@ -24,34 +25,35 @@ type TParams = 'index' | 'attributes';
  *
  * div[data-js-login-login-subpage].login-login-subpage >
  * form.login-form.rp-form[data-js-login-login-form] > label.rp-field >
- * input[type='text'].rp-input[placeholder='Login'][data-js-login][value='default'][maxlength='128']
+ * input[type='text'].rp-input[placeholder='Login'][data-js-login][value='default']
  *
+ *
+ * TODO: add possibility to work with ElementHandle[] and xPath
  */
 function getSelectorFromElementHandle(element: ElementHandle, params: TParams = 'index', parents = 3): Promise<string> {
     return element.evaluate(
-        (_elem: any, _params: TParams, _parents: number) => {
+        (_element: Element | Node & ParentNode, _params: TParams, _parents: number) => {
 
             const root: { name: string, attrs: string }[] = [];
             let j = 0;
 
-            function retrieveNodeNameAndAttributes(node: any) {
+            function retrieveNodeNameAndAttributes(node: Element | Node & ParentNode) {
                 let output = '';
                 const nodeName = node.nodeName.toLowerCase();
 
                 switch (_params) {
                     case 'index':
-                        const childNodesArr = Array.from(node.parentNode.children);
-                        const necessaryChildNodes = childNodesArr.filter((n: any) => n.nodeName.toLowerCase() === nodeName);
+                        const childNodesArr: Element[] = Array.from(node.parentNode!.children);
+                        const necessaryChildNodes = childNodesArr.filter((elem: Element) => elem.nodeName.toLowerCase() === nodeName);
 
                         if (necessaryChildNodes.length > 1) {
-                            const index = childNodesArr.indexOf(node) + 1;
+                            const index = childNodesArr.indexOf(node as Element) + 1;
                             output = `:nth-child(${index})`;
                         }
                         break;
                     case 'attributes':
-                        if (node.hasAttributes()) {
-                            const attrs = node.attributes;
-                            for (const {value, name} of attrs) {
+                        if (node instanceof Element && node.hasAttributes()) {
+                            for (const {value, name} of node.attributes) {
                                 if (value) {
                                     switch (name) {
                                         case 'id':
@@ -61,6 +63,15 @@ function getSelectorFromElementHandle(element: ElementHandle, params: TParams = 
                                             output += `.${value.split(/\s+\b/).join('.')}`;
                                             break;
                                         default:
+                                            const valuesForSkip = [
+                                                'ng-version',
+                                                'width', 'height', 'style', 'aria-hidden', 'role', 'color', 'focusable', 'viewBox',
+                                                'xmlns', 'tabindex', 'layout', 'src', 'alt', 'maxlength'
+                                            ];
+
+                                            if (valuesForSkip.includes(name)) {
+                                                break;
+                                            }
                                             output += `[${name}='${value}']`;
                                             break;
                                     }
@@ -79,11 +90,11 @@ function getSelectorFromElementHandle(element: ElementHandle, params: TParams = 
                     return;
                 } else {
                     j++;
-                    retrieveNodeNameAndAttributes(node.parentNode);
+                    retrieveNodeNameAndAttributes(node.parentNode!);
                 }
             }
 
-            retrieveNodeNameAndAttributes(_elem);
+            retrieveNodeNameAndAttributes(_element);
 
             return root.reverse().map(({name, attrs}) => name + attrs).join(' > ');
         },
@@ -107,11 +118,11 @@ export const elementHandler = (child: IRootEl | ElementHandle, parent?: IRootEl 
 
     return {
         async $() {
-            if (instanceOfElementHandle(child)) {
+            if (isElementHandle(child)) {
                 if (parent) {
                     const selectorChild = await getSelectorFromElementHandle(child, 'index', 5);
 
-                    if (instanceOfElementHandle(parent)) {
+                    if (isElementHandle(parent)) {
                         const el = await parent;
                         return el.$(selectorChild);
                     }
@@ -125,10 +136,9 @@ export const elementHandler = (child: IRootEl | ElementHandle, parent?: IRootEl 
                     return element!.$(selectorChild);
                 }
                 return child;
-
             } else {
                 if (parent) {
-                    if (instanceOfElementHandle(parent)) {
+                    if (isElementHandle(parent)) {
                         const el = await parent;
                         return el.$(child.selector);
                     }
@@ -141,17 +151,16 @@ export const elementHandler = (child: IRootEl | ElementHandle, parent?: IRootEl 
                     const element = await page.$(parent.selector);
                     return element!.$(child.selector);
                 }
-
                 return page.$(child.selector);
             }
         },
         async $$() {
-            if (instanceOfElementHandle(child)) {
+            if (isElementHandle(child)) {
                 const selectorChild = await getSelectorFromElementHandle(child, 'index', 5);
 
                 if (parent) {
 
-                    if (instanceOfElementHandle(parent)) {
+                    if (isElementHandle(parent)) {
                         const el = await parent;
                         return el.$$(selectorChild);
                     }
@@ -167,7 +176,7 @@ export const elementHandler = (child: IRootEl | ElementHandle, parent?: IRootEl 
                 return page.$$(selectorChild);
             } else {
                 if (parent) {
-                    if (instanceOfElementHandle(parent)) {
+                    if (isElementHandle(parent)) {
                         const el = await parent;
                         return el.$$(child.selector);
                     }
@@ -180,29 +189,27 @@ export const elementHandler = (child: IRootEl | ElementHandle, parent?: IRootEl 
                     const element = await page.$(parent.selector);
                     return element!.$$(child.selector);
                 }
-
                 return page.$$(child.selector);
             }
         },
         async selector(params: TParams = 'index', parents = 5) {
-
-            if (instanceOfElementHandle(child) && (parent && instanceOfElementHandle(parent))) {
+            if (isElementHandle(child) && (parent && isElementHandle(parent))) {
                 const selectorChild = await getSelectorFromElementHandle(child, params, parents);
                 const selectorParent = await getSelectorFromElementHandle(parent, params, parents);
                 return selectorParent + ' ' + selectorChild;
-            } else if (!instanceOfElementHandle(child) && (parent && instanceOfElementHandle(parent))) {
+            } else if (!isElementHandle(child) && (parent && isElementHandle(parent))) {
                 const selectorParent = await getSelectorFromElementHandle(parent, params, parents);
                 return selectorParent + ' ' + child.selector;
-            } else if (instanceOfElementHandle(child) && (parent && !instanceOfElementHandle(parent))) {
+            } else if (isElementHandle(child) && (parent && !isElementHandle(parent))) {
                 const selectorChild = await getSelectorFromElementHandle(child, params, parents);
                 return parent!.selector + ' ' + selectorChild;
-            } else if (instanceOfElementHandle(child) && !parent) {
+            } else if (isElementHandle(child) && !parent) {
                 return getSelectorFromElementHandle(child, params, parents);
-            } else if (!instanceOfElementHandle(child) && (parent && !instanceOfElementHandle(parent))) {
+            } else if (!isElementHandle(child) && (parent && !isElementHandle(parent))) {
                 return parent.selector + ' ' + child.selector;
-            } else if (!instanceOfElementHandle(child) && !parent) {
+            } else if (!isElementHandle(child) && !parent) {
                 return child.selector;
-            } else if (instanceOfElementHandle(child)) {
+            } else if (isElementHandle(child)) {
                 return getSelectorFromElementHandle(child, params, parents);
             } else {
                 return child.selector;
@@ -211,7 +218,7 @@ export const elementHandler = (child: IRootEl | ElementHandle, parent?: IRootEl 
     };
 };
 
-function instanceOfElementHandle(object: IRootEl | ElementHandle): object is ElementHandle {
+function isElementHandle(object: IRootEl | ElementHandle): object is ElementHandle {
     return '$' in object;
 }
 

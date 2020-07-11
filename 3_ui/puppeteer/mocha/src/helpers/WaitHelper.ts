@@ -7,7 +7,7 @@ import {BaseElement} from '../po/elements/BaseElement';
 
 async function checkCondition(
     condition: () => Promise<boolean>, interval: number, timeout: number,
-    resolve: () => any, reject: (reason?: any) => any
+    resolve: () => void, reject: (reason: Error) => void
 ) {
     try {
         const value = await condition();
