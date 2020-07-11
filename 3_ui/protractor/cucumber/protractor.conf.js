@@ -1,4 +1,7 @@
 const {argv} = require('./yargs.conf');
+const {existsSync, mkdirSync} = require('fs');
+
+const cucumberArtifactsDir = './artifacts/cucumber';
 
 module.exports.config = {
 
@@ -27,15 +30,17 @@ module.exports.config = {
             './src/step_definitions/**/*.js'
         ],
         format: [
-            'json:./artifacts/cucumber/cucumber.json',
+            `json:${cucumberArtifactsDir}/cucumber.json`,
             'node_modules/cucumber-pretty',
-            'node_modules/cucumber-junit-formatter:./artifacts/cucumber/junit.xml'
+            `node_modules/cucumber-junit-formatter:${cucumberArtifactsDir}/junit.xml`
         ],
-        tags: ['not @wip', argv.tags]
+        tags: ['not @wip'] // add argv.tags
     },
 
     async onPrepare() {
         const {protractor} = require('protractor');
+
+        existsSync(cucumberArtifactsDir) || mkdirSync(cucumberArtifactsDir, {recursive: true});
 
         await protractor.browser.waitForAngularEnabled(true);
         return protractor.browser.manage().window().setSize(1920, 1080);
