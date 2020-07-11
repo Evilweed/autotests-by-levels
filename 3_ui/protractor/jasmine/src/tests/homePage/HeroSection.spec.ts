@@ -19,6 +19,6 @@ describe('Hero section.', () => {
         await homePage.infoBlock.startedBtn.click();
         await docsPage.asserts.opened();
 
-        await homePage.asserts.not.opened(); // example of a negative assert
+        // await homePage.asserts.not.opened(); // example of a negative assert
     });
 });

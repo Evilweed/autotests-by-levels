@@ -30,7 +30,9 @@ export const config: Config = {
     ],
 
     capabilities: {
-        browserName: 'chrome'
+        browserName: 'chrome',
+        shardTestFiles: true,
+        maxInstances: 2
     },
 
     jasmineNodeOpts: {

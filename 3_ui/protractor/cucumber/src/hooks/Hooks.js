@@ -1,6 +1,6 @@
 const {BeforeAll, Before, setDefaultTimeout, After, Status} = require('cucumber');
-const {protractor} = require("protractor");
-const {existsSync, mkdirSync, createWriteStream} = require("fs");
+const {protractor} = require('protractor');
+const {existsSync, mkdirSync, createWriteStream} = require('fs');
 const {getPage} = require('../po/pages');
 
 setDefaultTimeout(70000);
