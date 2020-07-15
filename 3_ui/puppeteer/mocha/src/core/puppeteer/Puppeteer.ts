@@ -3,6 +3,7 @@ import {ClickOptions, ElementHandle} from 'puppeteer';
 import {Logger} from '../../helpers/Logger';
 import * as log4js from 'log4js';
 import {WaitHelper} from '../../helpers/WaitHelper';
+import {step} from '../../helpers/reporter/step';
 
 export abstract class Puppeteer {
 
@@ -23,7 +24,7 @@ export abstract class Puppeteer {
         const elms = await this.elementHandler.$$();
 
         if (!elms.length) {
-            throw new Error(`The elements was not found: ${JSON.stringify(this.rootEl)}`);
+            throw new Error(`The elements was not found: ${JSON.stringify(this.rootEl)} on ${this.constructor.name}`);
         }
 
         return elms;
@@ -34,7 +35,7 @@ export abstract class Puppeteer {
         const elem = await this.elementHandler.$();
 
         if (!elem) {
-            throw new Error(`The element was not found: ${JSON.stringify(this.rootEl)}`);
+            throw new Error(`The element was not found: ${JSON.stringify(this.rootEl)} on ${this.constructor.name}`);
         }
 
         return elem;
@@ -69,6 +70,7 @@ export abstract class Puppeteer {
         return element;
     }
 
+    @step()
     public async click(options?: ClickOptions) {
         this.logger.debug('Click on:', this.rootEl, 'Options', options);
         this.logger.debug('Selector from the element', await this.elementHandler.selector());

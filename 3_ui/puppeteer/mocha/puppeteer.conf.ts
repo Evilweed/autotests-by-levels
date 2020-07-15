@@ -7,17 +7,22 @@ interface IExtendedMocha extends MochaOptions {
     readonly spec: string[];
     readonly files?: string[];
     readonly require?: string[];
-    readonly parallel?: boolean;
-    readonly jobs?: number;
 }
 
 interface IConf {
     readonly timeout: typeof TIMEOUT;
     readonly baseUrl: string;
     readonly puppeteer: LaunchOptions;
+    readonly artifacts: {
+        readonly dir: string;
+        readonly screenshots: string;
+        readonly har: string;
+    };
     readonly log4js: Configuration;
     readonly mocha: IExtendedMocha;
 }
+
+const ARTIFACTS_DIR = './artifacts';
 
 export const TIMEOUT = {
     sec: 1000,
@@ -33,7 +38,7 @@ export const TIMEOUT = {
 export const config: IConf = {
 
     timeout: TIMEOUT,
-    baseUrl: argv.baseUrl || 'https://angular.io/',
+    baseUrl: argv.baseUrl || 'https://angular.io',
 
     puppeteer: {
         headless: false,
@@ -52,19 +57,37 @@ export const config: IConf = {
         require: [
             './src/hooks/Hooks.ts'
         ],
-        reporter: 'spec',
+        reporter: './src/helpers/reporter',
+        reporterOptions: {
+            'mocha-junit-reporter': {
+                reporterOptions: {
+                    mochaFile: `${ARTIFACTS_DIR}/junit/junit-mocha.xml`
+                }
+            },
+            'allure-mocha': {
+                reporterOptions: {
+                    resultsDir: `${ARTIFACTS_DIR}/allure/source`,
+                }
+            }
+        },
         ui: 'bdd',
         timeout: TIMEOUT.min * 2,
         slow: TIMEOUT.min,
-        parallel: true,
+        parallel: false, // todo reporters work only on single thread mode
         jobs: 2
+    },
+
+    artifacts: {
+        dir: ARTIFACTS_DIR,
+        screenshots: `${ARTIFACTS_DIR}/screenshots/`,
+        har: `${ARTIFACTS_DIR}/har/`
     },
 
     log4js: {
         appenders: {
             file: {
                 type: 'file',
-                filename: 'app.log'
+                filename: `${ARTIFACTS_DIR}/log4js/${new Date().valueOf()}_PID_${process.pid}_e2e.log`
             },
             console: {
                 type: 'stdout',

@@ -5,6 +5,7 @@ import {config} from '../../../puppeteer.conf';
 import {PageAsserts} from '../../asserts/PageAsserts';
 import {IRootEl} from '../../helpers/SelectorHelper';
 import {HeaderBlock} from '../blocks/header/HeaderBlock';
+import {step} from '../../helpers/reporter/step';
 
 export abstract class BasePage extends Puppeteer {
 
@@ -18,6 +19,7 @@ export abstract class BasePage extends Puppeteer {
         this.asserts = new PageAsserts(this);
     }
 
+    @step()
     public get(url = config.baseUrl + this.url, options?: DirectNavigationOptions) {
         return page.goto(url, options);
     }

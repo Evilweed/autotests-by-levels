@@ -5,7 +5,7 @@ export class HomePage extends BasePage {
     public readonly infoBlock: InfoBlock;
 
     constructor() {
-        super({selector: '#home'}, '');
+        super({selector: '#home'}, '/');
         this.infoBlock = new InfoBlock(this.rootEl);
     }
 }

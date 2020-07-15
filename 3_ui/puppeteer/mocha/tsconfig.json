@@ -6,7 +6,8 @@
     "strict": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"

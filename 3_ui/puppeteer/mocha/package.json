@@ -2,23 +2,35 @@
   "name": "project",
   "version": "1.0.0",
   "scripts": {
-    "pretest": "tslint -p tsconfig.json --fix",
-    "test": "ts-node ./node_modules/mocha/bin/mocha"
+    "clean": "rimraf ./artifacts/allure/source/*",
+    "pretest": "tslint -p tsconfig.json --fix && npm run clean",
+    "test": "ts-node ./node_modules/mocha/bin/mocha",
+    "allure:history": "copyfiles -f \"./artifacts/allure/report/history/**\" ./artifacts/allure/source/history/",
+    "allure:report": "allure generate ./artifacts/allure/source -c -o ./artifacts/allure/report",
+    "generate:allure-report": "npm run allure:history && npm run allure:report"
   },
   "dependencies": {
     "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
+    "@types/fs-extra": "^9.0.1",
+    "@types/mocha": "^8.0.0",
     "@types/puppeteer": "^3.0.1",
     "@types/yargs": "^15.0.5",
+    "allure-commandline": "^2.13.0",
+    "allure-mocha": "^2.0.0-beta.7",
     "chai": "^4.2.0",
+    "chrome-har": "^0.11.9",
+    "copyfiles": "^2.3.0",
+    "fs-extra": "^9.0.1",
     "husky": "^4.2.5",
     "log4js": "^6.3.0",
     "mocha": "^8.0.1",
-    "puppeteer": "^5.0.0",
+    "mocha-junit-reporter": "^2.0.0",
+    "puppeteer": "^5.1.0",
+    "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
     "tslint": "^6.1.2",
     "typescript": "^3.9.6",
-    "yargs": "^15.4.0"
+    "yargs": "^15.4.1"
   },
   "engines": {
     "node": ">=12",

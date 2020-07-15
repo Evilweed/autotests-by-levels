@@ -13,4 +13,4 @@
 
     * Protractor + Cucumber + Chai + HTML/Junit reporters + js;
     * Protractor + Jasmine + Allure/Junit reporters + ts;
-    * Puppeteer + Mocha + Chai + ts;
+    * Puppeteer + Mocha + Chai + Allure + ts;

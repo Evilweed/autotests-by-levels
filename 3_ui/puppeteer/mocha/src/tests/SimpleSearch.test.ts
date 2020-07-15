@@ -1,4 +1,4 @@
-import {before, describe, it} from 'mocha';
+import {before, describe, it} from '../core/mocha';
 import {App} from '../App';
 
 const app = new App();
