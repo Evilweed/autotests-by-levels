@@ -7,10 +7,16 @@
     
 2. API:
 
-    * Mocha + Got + Chai + Jsonschema + js/ts;
+    * Mocha + Got + Chai + JsonSchema + js/ts;
     
 3. E2E UI:
 
     * Protractor + Cucumber + Chai + HTML/Junit reporters + js;
     * Protractor + Jasmine + Allure/Junit reporters + ts;
-    * Puppeteer + Mocha + Chai + Allure + ts;
+    * Puppeteer + Mocha + Chai + Allure/Junit reporters + ts;
+    * (TODO) Playwright + Jest Allure/Junit reporters + ts
+    
+    
+### TODO
+
+- add the README.md file into each TAF;
